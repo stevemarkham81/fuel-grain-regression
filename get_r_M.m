@@ -1,4 +1,4 @@
-function [r_dot_px, M_check] = get_r_dot_M(r_dot_desired_px, threshold)
+function [r_dot_px, M_check] = get_r_M(r_dot_desired_px, threshold)
 
 if abs(threshold-0.35)<1e-3
     % I precomputed a bunch of values for threshold=0.35, and the answer turns

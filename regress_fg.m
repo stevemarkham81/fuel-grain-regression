@@ -1,7 +1,7 @@
-function [bitmap, dt] = regress_fg(bitmap, px_cm, r_dot_desired_cm_s, dt)
+function [bitmap, dt] = regress_fg(bitmap, px_cm, r_dot_desired_cm_s, dt, threshold)
 % bitmap = regress_fg(bitmap, px_cm, r_dot_desired_cm_s, dt)
 % regress_fg takes in a fuel grain bitmap, px_cm unit converter, regression 
-% rate, and a time duration, and returns a new fuel grain bitmap that has been
+% rate, threshold, and a time duration, and returns a new fuel grain bitmap that has been
 % regressed accordingly. If the duration is not provided, it will be computed 
 % such that 1/60th of the FG will be regressed, and this value will be returned. 
 % If the duration is provided, the output duration will be the adjusted dt such
@@ -13,6 +13,10 @@ if ~exist('dt','var') || isempty(dt)
 else
     r_desired_px = round(r_dot_desired_cm_s*px_cm*dt);
     dt = r_desired_px/r_dot_desired_cm_s/px_cm;
+end
+
+if ~exist('threshold','var') || isempty(threshold)
+    threshold = 0.35; % Andrew Bath's master's thesis used 0.35
 end
 
 % Unit conversion and round(), since we can only handle integer number of pixels

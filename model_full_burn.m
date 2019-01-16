@@ -1,4 +1,4 @@
-function [time, rdot_cm_s, dt, runtime, min_radius, max_radius, area_px2, area_cm2, boundaries_cm] = 
+function [time, rdot_cm_s, dt, runtime, min_radius, max_radius, area_px2, area_cm2, boundaries_cm] = ...
   model_full_burn(fg_bitmap, px_cm, oxidizer_flow_rate_g_s, threshold, target_dt, target_rdot_px, max_regression_steps)
   
   % Check inputs
@@ -53,7 +53,7 @@ function [time, rdot_cm_s, dt, runtime, min_radius, max_radius, area_px2, area_c
   runtime(regression_step) = NaN;
   min_radius(regression_step) = min(r_cm(sub2ind(size(r_cm),b{1}(:,1),b{1}(:,2))));
   max_radius(regression_step) = max(r_cm(sub2ind(size(r_cm),b{1}(:,1),b{1}(:,2))));
-  area_px2(regression_step) = sum(fg_bitmap);
+  area_px2(regression_step) = sum(fg_bitmap(:));
   area_cm2(regression_step) = area_px2(regression_step)./(px_cm^2);
   boundaries_cm{regression_step} = [x_cm(sub2ind(size(x_cm),b{1}(:,1),b{1}(:,2))) y_cm(sub2ind(size(x_cm),b{1}(:,1),b{1}(:,2)))];
   
@@ -66,7 +66,7 @@ function [time, rdot_cm_s, dt, runtime, min_radius, max_radius, area_px2, area_c
       target_dt = target_rdot_px/(rdot_cm_s(regression_step)*px_cm);
     end
     
-    [fg_bitmap, dt(regression_step)] = regress_fg(fg_bitmap, px_cm, oxidizer_flow_rate_g_s, 1, [], [], threshold);
+    [fg_bitmap, dt(regression_step)] = regress_fg(fg_bitmap, px_cm, rdot_cm_s(regression_step), target_dt, threshold);
     runtime(regression_step) = toc(start_tic);
     
     regression_step = regression_step + 1;
@@ -78,7 +78,7 @@ function [time, rdot_cm_s, dt, runtime, min_radius, max_radius, area_px2, area_c
     runtime(regression_step) = NaN;
     min_radius(regression_step) = min(r_cm(sub2ind(size(r_cm),b{1}(:,1),b{1}(:,2))));
     max_radius(regression_step) = max(r_cm(sub2ind(size(r_cm),b{1}(:,1),b{1}(:,2))));
-    area_px2(regression_step) = sum(fg_bitmap);
+    area_px2(regression_step) = sum(fg_bitmap(:));
     area_cm2(regression_step) = area_px2(regression_step)./(px_cm^2);
     boundaries_cm{regression_step} = [x_cm(sub2ind(size(x_cm),b{1}(:,1),b{1}(:,2))) y_cm(sub2ind(size(x_cm),b{1}(:,1),b{1}(:,2)))];
     
