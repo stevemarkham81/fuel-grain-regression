@@ -16,7 +16,7 @@ else
     
     M_guess = round(polyval(p_fit_M_check, r_desired_px));
 end
-disp(sprintf('Guessed %d', M_guess));
+%disp(sprintf('Guessed %d', M_guess));
 
 r_px = r_desired_px + M_guess;
 
