@@ -37,5 +37,12 @@ end
 
 % Apply the disk filter and threshold to model the regression:
 disk_filter = fspecial('disk', r_px);
-filtered_bitmap = imfilter(bitmap, disk_filter, 'replicate');
-bitmap = double(filtered_bitmap>threshold | bitmap);
+
+quarter_bitmap = bitmap(1:(size(bitmap,1)+1)/2,1:(size(bitmap,2)+1)/2);
+filtered_quarter_bitmap = imfilter(quarter_bitmap, disk_filter, 'symmetric');
+quarter_bitmap = double(filtered_quarter_bitmap>threshold | quarter_bitmap);
+bitmap = [quarter_bitmap flip(quarter_bitmap(:,1:end-1),2); ...
+          flip(quarter_bitmap(1:end-1,:),1) flip(flip(quarter_bitmap(1:end-1,1:end-1),2),1)];
+
+% filtered_bitmap = imfilter(bitmap, disk_filter, 'replicate');
+% bitmap = double(filtered_bitmap>threshold | bitmap);

@@ -5,7 +5,8 @@ for threshold = [0 0.1 0.2 0.35]
 for target_dt = [0.5 1]
 
 
-npxpss = [257 513 1025 2049];
+% npxpss = [257 513 1025 2049 2047 4095];
+npxpss = [2047];
 mean_time_per_iteration = zeros(size(npxpss));
 
 for i = 1:length(npxpss)
@@ -13,7 +14,7 @@ for i = 1:length(npxpss)
   
   dt_str = sprintf('%dp%d',floor(target_dt),floor(10*mod(target_dt,1)));
   threshold_str = sprintf('0p%02d',floor(100*threshold));
-  data_file_name = sprintf('%s_%dpx_%ss_%s.mat','fg_complex',npxps,dt_str, threshold_str);
+  data_file_name = sprintf('%s_%dpx_%ss_%s_q.mat','fg_complex',npxps,dt_str, threshold_str);
   data_file = fullfile(data_folder,data_file_name);
   if ~exist(data_file,'file')
   
